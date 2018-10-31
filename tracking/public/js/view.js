@@ -1,17 +1,17 @@
 let markers = new Map();
 document.addEventListener('DOMContentLoaded',()=>{
     var socket = io('/');
-      
-    var map ;  
-   
-    socket.on('locationsUpdate',(locationsMap)=>{
+
+    var map ;
+
+    socket.on('location',(locationsMap)=>{
         console.log("type of ==>",typeof locationsMap , locationsMap);
 
         locationsMap.forEach((userObj)=>{
             console.log('id is this-->',userObj.user_id);
-            
+
             let position = {};
-            position.lat = userObj.location.lat ; 
+            position.lat = userObj.location.lat ;
             position.lng = userObj.location.lng ;
             if(position.lat && position.lng){
                 var marker = new google.maps.Marker({
@@ -20,23 +20,23 @@ document.addEventListener('DOMContentLoaded',()=>{
                     title: userObj.user_id
                   });
             }
-            
+
               if(markers.has(userObj.user_id)){
                   let oldMarker = markers.get(userObj.user_id);
                   oldMarker.setMap(null);
                   markers.delete(userObj.user_id);
                   markers.set(userObj.user_id,marker);
               }
-             
+
 
         })
 
     })
 
     setInterval(()=>{
-        socket.emit('requestLocation');
+        socket.emit('request_Location');
     },10000)
-    
+
 })
 function initMap() {
     var options = {

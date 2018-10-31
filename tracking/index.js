@@ -20,7 +20,7 @@ console.log('user model-->',USER);
 io.on('connection',(socket)=>{
 
 
-      socket.on('updateLocation',(data)=>{
+      socket.on('update_Location',(data)=>{
           let dataToBeupdated = {} ;
           dataToBeupdated.user_id = socket.id ;
           dataToBeupdated.location = {};
@@ -32,7 +32,7 @@ io.on('connection',(socket)=>{
 
       })
 
-    socket.on('registerDriver',()=>{
+    socket.on('register_User',()=>{
 
         let user = new USER() ;
         user.user_id = socket.id ;
@@ -44,10 +44,10 @@ io.on('connection',(socket)=>{
         locationsMap.set(socket.id,{lat : null , lng : null});
     })
 
-    socket.on('requestLocation',()=>{
+    socket.on('request_Location',()=>{
         USER.find({}).lean().exec((error,responses)=>{
 
-            socket.emit('locationsUpdate',responses);
+            socket.emit('location',responses);
         })
 
     })
